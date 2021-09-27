@@ -50,14 +50,16 @@ def POST_WORD(word_list: list, identifier: str, public_key: str):
     POST_DATA["vote"] = vote_str
     post_word_URL = f"https://www.menti.com/core/votes/{public_key}"
     post_word_request = rq.post(post_word_URL, headers=POST_HEADER, data=POST_DATA)
-    print("[INFO] Posted word: {}".format(vote_str))
+    print("[INFO] Posted word: {}       ({})".format(vote_str, threading.current_thread().name))
     
 
 
 
 def MENTISPAMMER(word_list: list, public_key: str):
     # Spammer Class -> Spam Until Hard Close
-    random.shuffle(word_list)
+
+    print("[INFO] {} started!".format(threading.current_thread().name))
+
     while 1:
         for word in word_list:
             identifier = MENTI_IDENTIFIER()
@@ -75,12 +77,12 @@ def main():
     wordlist = wordlist.split("\n")
     random.shuffle(wordlist)
     wordlist = wordlist[:1000]
-
+    print("[INFO] Prepared Wordlist")
 
     # Get Menti Public Key
     public_key = MENTI_INFO(MentID)["pace"]["active"] 
 
-
+    print("[INFO] Starting Threads..")
     # Start Threads + Spammer
     for _ in range(Threads):
         thread = threading.Thread(target=MENTISPAMMER,args=(wordlist, public_key))
