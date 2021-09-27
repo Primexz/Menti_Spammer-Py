@@ -2,8 +2,10 @@
 
 Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
+<br><br>
+This script uses pre-made words to beautify a Menti page!
 
-
+<br>
 
 **Status: Working**
 
