@@ -4,7 +4,8 @@ Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
 
 
-**Status: Working!**
+
+**Status: Working**
 
 ## Usage
 1. Clone Repo:
@@ -36,11 +37,13 @@ Threads:
 ```
 5: **Have Fun!!**
 
-# Threading
+## Threading
 This repo uses threads to increase performance.<br>
 Too many threads could slow down your network or PC.<br>
 I recommend not to use more than 50 threads at the same time!
 
+# Errors
+If Menti has fixed this script, or you get other errors please report them to Github so I can fix them!
 
 ## Requirements
 - random
