@@ -4,6 +4,8 @@ Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
 
 
+**Status: Working!**
+
 ## Usage
 1. Clone Repo:
 ```
