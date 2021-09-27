@@ -50,7 +50,7 @@ Too many threads could slow down your network or PC.<br>
 I recommend not to use more than 50 threads at the same time!
 
 ## Errors
-If Menti has fixed this script, or you get other errors please report them to Github so I can fix them!
+If Menti has fixed this script, or you get other errors please report them [here](https://github.com/Primexz/Menti_Spammer-Py/issues) so I can fix them!
 
 
 
