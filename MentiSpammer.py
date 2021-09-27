@@ -76,8 +76,8 @@ def main():
     wordlist = web_byte.decode('utf-8')
     wordlist = wordlist.split("\n")
     random.shuffle(wordlist)
-    wordlist = wordlist[:1000]
-    print("[INFO] Prepared Wordlist")
+    print("[INFO] Prepared Wordlist ({} words)".format(len(wordlist)))
+
 
     # Get Menti Public Key
     public_key = MENTI_INFO(MentID)["pace"]["active"] 
