@@ -38,20 +38,22 @@ def MENTI_INFO(menti_ID: str):
     return series_response
 
 
-def POST_WORD(word_list: list, identifier: str, public_key: str):    
+def POST_WORD(post_word: list, identifier: str, public_key: str):    
     # Empty Check -> Possible Broken Wordlist API
-    if word_list == "":
+    if post_word == "":
         print("Oops, the fetched Wordlist is empty?")
         return
     
+
     # Post New Word to Menti
     POST_HEADER["x-identifier"] = identifier
-    vote_str = " ".join([word.replace(" ","_") for word in word_list])
-    POST_DATA["vote"] = vote_str
+    POST_DATA["vote"] = post_word
     post_word_URL = f"https://www.menti.com/core/votes/{public_key}"
     post_word_request = rq.post(post_word_URL, headers=POST_HEADER, data=POST_DATA)
-    print("[INFO] Posted word: {}       ({})".format(vote_str, threading.current_thread().name))
+    print("[INFO] Posted word: {}       ({})".format(post_word, threading.current_thread().name))
     
+
+
 
 
 
@@ -60,10 +62,11 @@ def MENTISPAMMER(word_list: list, public_key: str):
 
     print("[INFO] {} started!".format(threading.current_thread().name))
 
+
     while 1:
         for word in word_list:
             identifier = MENTI_IDENTIFIER()
-            POST_WORD(word, identifier, public_key)
+            POST_WORD(random.choice(word_list), identifier, public_key)
 
 
 
@@ -75,7 +78,6 @@ def main():
     web_byte = urlopen(req).read()
     wordlist = web_byte.decode('utf-8')
     wordlist = wordlist.split("\n")
-    random.shuffle(wordlist)
     print("[INFO] Prepared Wordlist ({} words)".format(len(wordlist)))
 
 
