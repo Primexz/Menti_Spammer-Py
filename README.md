@@ -3,6 +3,7 @@
 Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
 
+
 ## Usage
 1. Clone Repo:
 ```
@@ -32,6 +33,11 @@ Threads:
 ...
 ```
 5: **Have Fun!!**
+
+# Threading
+This repo uses threads to increase performance.<br>
+Too many threads could slow down your network or PC.<br>
+I recommend not to use more than 50 threads at the same time!
 
 
 ## Requirements
