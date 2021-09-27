@@ -37,16 +37,18 @@ Threads:
 ```
 5: **Have Fun!!**
 
+## Requirements
+- random
+- json
+- urllib
+
 ## Threading
 This repo uses threads to increase performance.<br>
 Too many threads could slow down your network or PC.<br>
 I recommend not to use more than 50 threads at the same time!
 
-# Errors
+## Errors
 If Menti has fixed this script, or you get other errors please report them to Github so I can fix them!
 
-## Requirements
-- random
-- json
-- urllib
+
 
