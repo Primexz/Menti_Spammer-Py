@@ -5,86 +5,106 @@ from urllib.request import Request, urlopen
 import random
 import json
 
-MentID = input("Enter MentiID:\n> ")
+
+print("""
+\33[32m
+         ,---.  .-. .-. _______ ,-.     .---. ,---.    .--.           
+|\    /| | .-'  |  \| ||__   __||(|    ( .-._)| .-.\  / /\ \ |\    /| 
+|(\  / | | `-.  |   | |  )| |   (_)   (_) \   | |-' )/ /__\ \|(\  / | 
+(_)\/  | | .-'  | |\  | (_) |   | |   _  \ \  | |--' |  __  |(_)\/  | 
+| \  / | |  `--.| | |)|   | |   | |  ( `-'  ) | |    | |  |)|| \  / | 
+| |\/| | /( __.'/(  (_)   `-'   `-'   `----'  /(     |_|  (_)| |\/| | 
+'-'  '-'(__)   (__)                        (__)            '-'  '-'       
+
+---------------------------------------------------------------------
+
+\33[37m
+""")
+
+
+MentID = input("\033[0mEnter MentiID:\n> ")
 Threads = int(input("Threads:\n> "))
 POST_HEADER = {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " 
-    + "(KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"
 }
+
 POST_DATA = {
     "question_type": "wordcloud"
 }
-MENTI_IDENTIFIERS = "https://www.menti.com/core/identifiers"
-IDENTIFIERS = []
 ThreadCount = int(0)
 
 
 def MENTI_IDENTIFIER():
-    identifier_request = rq.post(MENTI_IDENTIFIERS, headers=POST_HEADER)
+    IDENTI_REQ = rq.post("https://www.menti.com/core/identifiers", headers=POST_HEADER)
 
-    identifier_response = json.loads(identifier_request.text)
-    identifier = identifier_response["identifier"]
-    IDENTIFIERS.append(identifier)
-    return identifier
+    IDENTI_RES = json.loads(IDENTI_REQ.text)
+    IDENTI = IDENTI_RES["identifier"]
+    return IDENTI
 
 
 
 def MENTI_INFO(menti_ID: str):
     # Fetch Info from Menti
-    series_URL = f"https://www.menti.com/core/vote-keys/{menti_ID}/series"
-    series_request = rq.get(series_URL, headers=POST_HEADER)
-    
-    series_response = json.loads(series_request.text)
-    return series_response
+    INFO_Request = rq.get(f"https://www.menti.com/core/vote-keys/{menti_ID}/series", headers=POST_HEADER)
+
+    # Error Handeling
+    if INFO_Request.status_code != 200:
+        return 0
+
+
+    # Return on Success
+    Response = json.loads(INFO_Request.text)
+    return Response["pace"]["active"] 
+
 
 
 def POST_WORD(post_word: list, identifier: str, public_key: str):    
     # Empty Check -> Possible Broken Wordlist API
     if post_word == "":
-        print("Oops, the fetched Wordlist is empty?")
+        print("\033[31m[ERROR] Empty Wordlist!\33[37m")
         return
     
 
     # Post New Word to Menti
     POST_HEADER["x-identifier"] = identifier
     POST_DATA["vote"] = post_word
-    post_word_URL = f"https://www.menti.com/core/votes/{public_key}"
-    post_word_request = rq.post(post_word_URL, headers=POST_HEADER, data=POST_DATA)
-    print("[INFO] Posted word: {}       ({})".format(post_word, threading.current_thread().name))
-    
+    post_word_request = rq.post(f"https://www.menti.com/core/votes/{public_key}", headers=POST_HEADER, data=POST_DATA)
 
-
+    # Error Handeling + Console Output
+    if post_word_request.status_code == 200:
+        print(f"\033[92m[INFO] Posted word: {post_word}       ({threading.current_thread().name})\33[37m")
+    else :
+        print(f"\033[31m[ERROR] An error occured on posting word: {post_word_request.status_code}\33[37m")
 
 
 
 def MENTISPAMMER(word_list: list, public_key: str):
     # Spammer Class -> Spam Until Hard Close
 
-    print("[INFO] {} started!".format(threading.current_thread().name))
+    print(f"\033[93m[INFO] {threading.current_thread().name} started!\33[37m")
 
 
+    # Endless Loop until Kill
     while 1:
         for word in word_list:
             identifier = MENTI_IDENTIFIER()
             POST_WORD(random.choice(word_list), identifier, public_key)
 
 
-
 def main():
 
-    # Get Random Word List + Shuffle + Cut Array to 1000 Words
-    url="https://svnweb.freebsd.org/csrg/share/dict/words?revision=61569&view=co"
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    web_byte = urlopen(req).read()
-    wordlist = web_byte.decode('utf-8')
-    wordlist = wordlist.split("\n")
-    print("[INFO] Prepared Wordlist ({} words)".format(len(wordlist)))
+    # Get Random Word List
+    wordlist = rq.get("https://random-word-api.herokuapp.com/word?number=50000").json()
+    print(f"\n\033[95m[INFO] Prepared Wordlist ({len(wordlist)} words)\33[37m")
 
-
+   
     # Get Menti Public Key
-    public_key = MENTI_INFO(MentID)["pace"]["active"] 
+    public_key = MENTI_INFO(MentID)
+    if public_key == 0:
+        print(f"\033[31m[ERROR] There was an error on requesting informations from Menti!\n\n\033[1mCheck if the Menti-ID is valid!\33[37m")
+        quit()
 
-    print("[INFO] Starting Threads..")
+
     # Start Threads + Spammer
     for _ in range(Threads):
         thread = threading.Thread(target=MENTISPAMMER,args=(wordlist, public_key))
