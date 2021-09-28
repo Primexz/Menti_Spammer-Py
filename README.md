@@ -3,7 +3,7 @@
 Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
 <br><br>
-This script uses pre-made words to beautify a Menti page!
+This script uses big worldlist to beautify a Menti page!
 
 <br>
 
@@ -46,7 +46,7 @@ Threads:
 
 ## How it works
 Every time you send words to a Wordcloud on Mentimeter, your client will send a GET request to https://www.menti.com/core/vote-keys/MENTI_ID/series
-<br>This request returned you about that:
+<br>This request returns:
 ```json
 {
    "id":"MENTI_ID",
