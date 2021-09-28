@@ -9,6 +9,8 @@ This script uses big worldlist to beautify a Menti page!
 
 **Status: Working**
 
+![](https://i.imgur.com/kPb99nn.png)
+
 ## Usage
 1. Clone Repo:
 ```
