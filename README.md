@@ -3,7 +3,7 @@
 Word Spammer for Menti.com written in Python.<br>
 This repo allows you to have fun with mentimeter!
 <br><br>
-This script uses big worldlist to beautify a Menti page!
+This script use a big worldlist and modern python language to beautify a Menti page!
 
 <br>
 
