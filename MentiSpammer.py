@@ -22,6 +22,8 @@ print("""
 """)
 
 
+
+
 MentID = input("\033[0mEnter MentiID:\n> ")
 Threads = int(input("Threads:\n> "))
 POST_HEADER = {
@@ -35,7 +37,10 @@ ThreadCount = int(0)
 
 
 def MENTI_IDENTIFIER():
-    IDENTI_REQ = rq.post("https://www.menti.com/core/identifiers", headers=POST_HEADER)
+    try:
+        IDENTI_REQ = rq.post("https://www.menti.com/core/identifiers", headers=POST_HEADER)
+    except:
+         return print(f"\033[31m[ERROR] An unknown error occured on request identifiers!\33[37m")
 
     IDENTI_RES = json.loads(IDENTI_REQ.text)
     IDENTI = IDENTI_RES["identifier"]
@@ -68,14 +73,19 @@ def POST_WORD(post_word: list, identifier: str, public_key: str):
     # Post New Word to Menti
     POST_HEADER["x-identifier"] = identifier
     POST_DATA["vote"] = post_word
-    post_word_request = rq.post(f"https://www.menti.com/core/votes/{public_key}", headers=POST_HEADER, data=POST_DATA)
+    try:
+        post_word_request = rq.post(f"https://www.menti.com/core/votes/{public_key}", headers=POST_HEADER, data=POST_DATA)
+    except:
+        return print(f"\033[31m[ERROR] An unknown error occured on posting word: {post_word}\33[37m")
+    
+
+
 
     # Error Handeling + Console Output
     if post_word_request.status_code == 200:
         print(f"\033[92m[INFO] Posted word: {post_word}       ({threading.current_thread().name})\33[37m")
     else :
         print(f"\033[31m[ERROR] An error occured on posting word: {post_word_request.status_code}\33[37m")
-
 
 
 def MENTISPAMMER(word_list: list, public_key: str):
